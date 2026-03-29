@@ -20,6 +20,9 @@ Flappy Kiro is a retro-style, browser-based endless scroller game inspired by Fl
 - **Playing_State**: The active gameplay state after the first input
 - **Score_Bar**: The UI strip at the bottom of the canvas displaying the current Score and High_Score
 - **Canvas**: The HTML `<canvas>` element on which the game is rendered
+- **Hitbox**: The axis-aligned bounding rectangle used for collision detection, inset from the sprite's visual bounds
+- **Invincibility_Window**: A short period after a collision is triggered during which further collisions are ignored
+- **Collision_Response**: The visual flash animation played on Ghosty immediately after a collision is registered
 
 ---
 
@@ -114,10 +117,15 @@ Flappy Kiro is a retro-style, browser-based endless scroller game inspired by Fl
 
 #### Acceptance Criteria
 
-1. WHEN Ghosty's bounding box overlaps with any Pipe_Pair's bounding box, THE Game SHALL transition to Game_Over_State.
-2. WHEN Ghosty's vertical position moves above the top boundary of the play area, THE Game SHALL transition to Game_Over_State.
-3. WHEN Ghosty's vertical position moves below the top of the Score_Bar, THE Game SHALL transition to Game_Over_State.
-4. THE Game SHALL use axis-aligned bounding box (AABB) collision detection with a small inset margin to avoid pixel-perfect unfairness.
+1. THE Game SHALL define Ghosty's hitbox as a named inset rectangle (e.g., 20% smaller on each side than the sprite bounds), so that the effective collision area is visually centered on the sprite and forgiving of near-misses.
+2. THE Game SHALL define each Pipe_Pair's hitbox as the full rectangular bounds of both the top and bottom pipe segments, with no additional inset.
+3. WHEN Ghosty's hitbox overlaps with any Pipe_Pair's hitbox using AABB intersection, THE Game SHALL register a pipe collision.
+4. WHEN Ghosty's hitbox top edge moves above `y = 0` (the top of the play area / ceiling), THE Game SHALL register a ceiling collision.
+5. WHEN Ghosty's hitbox bottom edge moves below the top of the Score_Bar (the ground boundary), THE Game SHALL register a ground collision.
+6. WHEN any collision is registered AND Ghosty is NOT in an invincibility window, THE Game SHALL trigger a collision response and transition to Game_Over_State.
+7. WHEN a collision response is triggered, THE Game SHALL play a brief visual flash animation on Ghosty (e.g., alternating opacity or tint for 3–5 frames) before the Game_Over_State overlay appears.
+8. THE Game SHALL define a named invincibility duration constant (e.g., `INVINCIBILITY_FRAMES = 0` by default), so that the value can be tuned without changing collision logic; WHILE Ghosty's invincibility timer is greater than zero, all collision checks SHALL be skipped and the timer SHALL decrement each frame.
+9. ALL hitbox dimensions and boundary offsets SHALL be defined as named constants, not inline magic numbers.
 
 ---
 
