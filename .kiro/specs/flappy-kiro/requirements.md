@@ -45,7 +45,7 @@ Flappy Kiro is a retro-style, browser-based endless scroller game inspired by Fl
 #### Acceptance Criteria
 
 1. THE Game SHALL render a light blue background with a sketchy, hand-drawn texture effect (e.g., irregular lines or noise patterns drawn on the canvas).
-2. THE Game SHALL render floating cloud-like shapes in the background that scroll from right to left.
+2. THE Game SHALL render semi-transparent, floating cloud-like shapes in the background that scroll from right to left at multiple independent speeds, so that faster clouds appear closer and slower clouds appear farther away (parallax depth effect).
 3. THE Game SHALL render Pipe_Pairs as solid green rectangles with a slightly darker green border/cap on the open end.
 4. THE Score_Bar SHALL be rendered as a distinct strip at the bottom of the Canvas, visually separated from the play area.
 5. THE Game SHALL render Ghosty using the sprite at `assets/ghosty.png`, scaled to a consistent size throughout gameplay.
@@ -77,6 +77,21 @@ Flappy Kiro is a retro-style, browser-based endless scroller game inspired by Fl
 3. WHILE in Playing_State, THE Game_Loop SHALL update Ghosty's vertical position each frame based on Ghosty's current velocity.
 4. THE Game SHALL cap Ghosty's maximum downward velocity to prevent unrealistically fast falling.
 5. WHILE in Playing_State, THE Game_Loop SHALL scroll all Pipe_Pairs and background elements from right to left at a constant speed.
+
+---
+
+### Requirement 4b: Physics System Constants and Interpolation
+
+**User Story:** As a player, I want Ghosty's movement to feel physically consistent and smooth, so that the game is predictable and satisfying to control.
+
+#### Acceptance Criteria
+
+1. THE Game SHALL define a named gravity constant (e.g., `GRAVITY = 0.5` pixels/frame²) applied as a fixed downward acceleration to Ghosty's vertical velocity each frame while in Playing_State.
+2. WHEN a Flap is triggered, THE Game SHALL set Ghosty's vertical velocity to a fixed named ascent constant (e.g., `FLAP_VELOCITY = -9` pixels/frame), overriding any current velocity regardless of direction.
+3. THE Game SHALL define a named terminal velocity constant (e.g., `TERMINAL_VELOCITY = 12` pixels/frame downward) and clamp Ghosty's downward velocity to this limit each frame, preventing unrealistically fast falling.
+4. THE Game SHALL preserve momentum between frames — Ghosty's velocity SHALL carry over from the previous frame and only be modified by gravity acceleration or a Flap impulse, never reset arbitrarily.
+5. THE Game SHALL compute Ghosty's rendered position using linear interpolation between the previous frame's position and the current frame's position (e.g., `renderY = prevY + (currY - prevY) * alpha`), where `alpha` is the fractional progress within the current frame, so that Ghosty's motion appears smooth even at variable frame rates.
+6. ALL physics constants (gravity, flap velocity, terminal velocity) SHALL be defined as named constants at the top of the source file, not as inline magic numbers.
 
 ---
 
