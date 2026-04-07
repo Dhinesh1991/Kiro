@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flappy Kiro</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <script>
+    // ─── Mutable config (game logic reads from CFG, never bare constants) ───
+    const CFG = {
+      GRAVITY:              0.5,
+      FLAP_VELOCITY:       -9,
+      TERMINAL_VELOCITY:   12,
+      PIPE_GAP:            160,
+      PIPE_INTERVAL:       220,
+      PIPE_SPEED_BASE:     2.5,
+      PIPE_SPEED_MAX:      6.0,
+      PIPE_SPEED_STEP:     0.1,
+      HITBOX_INSET:        0.20,
+      INVINCIBILITY_FRAMES: 0,
+    };
+    const CFG_DEFAULTS = { ...CFG };
+
+    // ─── Fixed constants ─────────────────────────────────────────────────────
+    const CANVAS_W    = 480;
+    const CANVAS_H    = 640;
+    const SCORE_BAR_H = 40;
+    const PLAY_H      = CANVAS_H - SCORE_BAR_H;
+
+    const PIPE_WIDTH  = 60;
+
+    const GHOSTY_W    = 48;
+    const GHOSTY_H    = 48;
+
+    const FLASH_FRAMES = 4;
+    const FIXED_STEP   = 1000 / 60;
+
+    // ─── Canvas setup & viewport scaling ────────────────────────────────────
+    const canvas = document.getElementById('game');
+    const ctx    = canvas.getContext('2d');
+
+    canvas.width  = CANVAS_W;
+    canvas.height = CANVAS_H;
+
+    function resizeCanvas() {
+      const scaleX = window.innerWidth  / CANVAS_W;
+      const scaleY = window.innerHeight / CANVAS_H;
+      const scale  = Math.min(scaleX, scaleY);
+      canvas.style.width  = Math.floor(CANVAS_W * scale) + 'px';
+      canvas.style.height = Math.floor(CANVAS_H * scale) + 'px';
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // ─── State object ────────────────────────────────────────────────────────
+    const state = {
+      phase:         'start',
+      ghosty:        { x: CANVAS_W / 2 - GHOSTY_W / 2, y: PLAY_H / 2 - GHOSTY_H / 2, prevY: PLAY_H / 2 - GHOSTY_H / 2, vy: 0 },
+      pipes:         [],
+      score:         0,
+      highScore:     0,
+      scrolled:      0,
+      invincTimer:   0,
+      flashTimer:    0,
+      audioUnlocked: false,
+      clouds:        [],
+      configOpen:    false,
+    };
+
+    // ─── Game loop stub (RAF) ────────────────────────────────────────────────
+    let lastTime    = 0;
+    let accumulator = 0;
+
+    function loop(timestamp) {
+      const dt = Math.min(timestamp - lastTime, 250);
+      lastTime    = timestamp;
+      accumulator += dt;
+
+      while (accumulator >= FIXED_STEP) {
+        // update(FIXED_STEP);   // TODO: implement in task 7
+        accumulator -= FIXED_STEP;
+      }
+
+      const alpha = accumulator / FIXED_STEP;
+      // render(alpha);          // TODO: implement in task 8
+
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

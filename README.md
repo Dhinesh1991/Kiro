@@ -1,12 +1,12 @@
-# Flappy Kiro
+# Pink-Auto
 
 Initial folder containing support resources for the Flappy Kiro game.
 
 ## Example UI
 
-![Flappy Kiro UI](img/example-ui.png)
+![Pink-Auto](img/pink-auto.png)
 
 ## Resources
 
-- `assets/` - Game audio and sprites
+- `assets/` - App audio if required
 - `img/` - Screenshots and images
