@@ -1,6 +1,6 @@
 # Pink-Auto
 
-Initial folder containing support resources for the Flappy Kiro game.
+Initial folder containing support resources for the Pink-Auto Android application.
 
 ## Example UI
 
