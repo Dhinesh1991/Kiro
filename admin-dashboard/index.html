@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pink Auto Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fafafa; margin: 0; }
+    .wrap { max-width: 980px; margin: 24px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    button { padding: 8px 12px; border: 0; border-radius: 8px; background: #e91e63; color: #fff; cursor: pointer; }
+    input { padding: 8px; width: 220px; margin-right: 8px; }
+    .grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Pink Auto Admin</h1>
+    <div class="card">
+      <button id="loadAnalytics">Load Analytics</button>
+      <div id="analytics" class="grid" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>Blacklist Driver</h3>
+      <input id="driverId" placeholder="Driver ID" value="d1" />
+      <input id="reason" placeholder="Reason" value="Safety violation" />
+      <button id="blacklist">Blacklist</button>
+      <pre id="blacklistResult"></pre>
+    </div>
+  </div>
+  <script src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+version: "3.9"
+
+services:
+  auth:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/auth-service"
+    ports: ["4001:4001"]
+
+  ride:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/ride-service"
+    ports: ["4002:4002"]
+
+  admin:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/admin-service"
+    ports: ["4003:4003"]
+
+  location:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/location-service"
+    ports: ["4004:4004"]
+
+  fare:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/fare-service"
+    ports: ["4005:4005"]
+
+  payment:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/payment-service"
+    ports: ["4006:4006"]
+
+  kyc:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/kyc-service"
+    ports: ["4007:4007"]
+
+  notification:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/notification-service"
+    ports: ["4008:4008"]
+
+  allocator:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run dev -w @pink-auto/driver-allocator"
+    ports: ["4009:4009"]
+
+  gateway:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on: [auth, ride, admin, location, fare, payment, kyc, notification, allocator]
+    command: sh -c "npm install && npm run dev -w @pink-auto/gateway-service"
+    ports: ["4000:4000"]

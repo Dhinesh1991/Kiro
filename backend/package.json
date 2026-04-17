@@ -1,0 +1,13 @@
+{
+  "name": "pink-auto-backend",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run -ws build",
+    "dev": "npm run -ws dev"
+  }
+}
